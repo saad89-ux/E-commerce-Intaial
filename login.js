@@ -1,58 +1,84 @@
-let UserData = [
-    {
-        username: "saad789",
-        Email: "saadkamran678@gmail.com",
-        Password: "Ronaldo"
-    },
-    {
-        username: "saad79",
-        Email: "saadkamran78@gmail.com",
-        Password: "Ronald"
-    },
-    {
-        username: "saad78",
-        Email: "saadkamran68@gmail.com",
-        Password: "Ronalo"
-    },
-    {
-        username: "saad89",
-        Email: "saadkamran68@gmail.com",
-        Password: "Ronldo"
+// User data storage
+
+// Signup function
+function signup() {
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    let username = document.querySelector('.signup-username').value;
+    let email = document.querySelector('.signup-email').value;
+    let password = document.querySelector('.signup-password').value;
+    let messageElement = document.querySelector('.signup-message');
+    
+    if (!username || !email || !password) {
+        messageElement.innerHTML = "Please fill all fields!";
+        messageElement.style.color = "red";
+        return;
     }
-];
 
+    let newUser = { 
+        username: username,
+        email: email,
+        password: password 
+    };
 
-function checkingUserAccount(){
-    let username = document.querySelector('.username').value;
-    let password = document.querySelector('.password').value;
-    let email = document.querySelector('.email').value;
-    let messageElement = document.querySelector('p');
-    let isRegistered = false;
-
-    for (let i = 0; i < UserData.length; i++) {
-        if (UserData[i].username === username && 
-            UserData[i].Email === email &&
-            UserData[i].Password===password) {
-            isRegistered = true;
+    // Check if user already exists
+    let userExists = false;
+    for (let i = 0; i < users.length; i++) {
+        if (users[i].email === email) {
+            userExists = true;
             break;
         }
     }
-    if(isRegistered){
-        UserData.push( {
-            username: username,
-            Email: email,
-            Password: password
-        })
-        messageElement.innerHTML = "Registration successful!";
-        messageElement.style.color = "green";
-        window.location.href = "product.html";
-        return false;
+
+    if (userExists) {
+        messageElement.innerHTML = "User already registered!";
+        messageElement.style.color = "red";
+        return;
     }
-    else{
+
+    // Save new user
+    users.push(newUser);
+    console.log(users, 'users',newUser)
+    localStorage.setItem("users", JSON.stringify(users));
+    
+    messageElement.innerHTML = "Signup successful!";
+    messageElement.style.color = "green";
+
+    // Clear fields
+    document.querySelector('.signup-username').value = '';
+    document.querySelector('.signup-email').value = '';
+    document.querySelector('.signup-password').value = '';
+}
+
+// Login function
+function login() {
+    let email = document.querySelector('.login-email').value;
+    let password = document.querySelector('.login-password').value;
+    let messageElement = document.querySelector('.login-message');
+
+    // Get updated users from localStorage
+    users = JSON.parse(localStorage.getItem('users')) || [];
+    
+    let isValidUser = false;
+    for (let i = 0; i < users.length; i++) {
+        if (users[i].email === email && users[i].password === password) {
+            isValidUser = true;
+            break;
+        }
+    }
+
+    if (isValidUser) {
+        messageElement.innerHTML = "Login successful!";
+        messageElement.style.color = "green";
+        
+        // Store current user in localStorage
+        localStorage.setItem('currentUser', JSON.stringify({ email: email }));
+        
+        // Redirect after short delay to see message
+        setTimeout(function() {
+            window.location.href = "product.html";
+        }, 500);
+    } else {
         messageElement.innerHTML = "Invalid credentials!";
         messageElement.style.color = "red";
-        return false; 
-
     }
 }
- 

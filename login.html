@@ -3,18 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login System</title>
+    <title>Login/Signup System</title>
     <link rel="stylesheet" href="login.style.css">
 </head>
 <body>
-    <h1 class="login-heading">Login</h1>
-    <form onsubmit="return checkingUserAccount()">
-       <input type="text" placeholder="Enter your username" class="username" required><br>
-       <input type="email" placeholder="Enter your Email" class="email" required><br>
-       <input type="password" placeholder="Enter your password" class="password" required><br>
-       <button type="submit">Login</button>
-       <p></p>
-    </form>
+    <div>
+        <h1>Signup</h1>
+        <label>Username: <input type="text" class="signup-username"></label><br>
+        <label>Email: <input type="email" class="signup-email" ></label><br>
+        <label>Password: <input type="password" class="signup-password" ></label><br>
+        <button onclick="signup()">Signup</button>
+        <p class="signup-message"></p>
+    </div>
+
+    <div>
+        <h1>Login</h1>
+        <label>Email: <input type="email" class="login-email"></label><br>
+        <label>Password: <input type="password" class="login-password"></label><br>
+        <button onclick="login()">Login</button>
+        <p class="login-message"></p>
+    </div>
+
     <script src="login.js"></script>
 </body>
 </html>

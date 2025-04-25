@@ -189,65 +189,43 @@ let productsData = [
         origin: 'Pakistan'
     }
 ];
+function AddToCart(el){
+    let container = document.querySelectorAll("div")[0] ;
+    let quantity = 1 ;
+    let IsinStock = true ;
+    for(let i =0 ;i< productsData.length ; i++){
 
-let productsEl = document.querySelector(".Products-list-container");
-listProducts(productsData);
-function listProducts(products) {
-    productsEl.innerHTML = ""; 
-    for (let i = 0; i < products.length; i++) {
-        let productCard = makeProductCard(products[i]);
-        productsEl.innerHTML += productCard;
+        let selectedProduct = productsData[i] ;
+        if(selectedProduct.name === name 
+            && selectedProduct.type === type 
+            && selectedProduct.category===category
+            && selectedProduct.imgSrc === imgsrc 
+            && selectedProduct.price ===price 
+            && selectedProduct.isImported === true
+            && selectedProduct.origin === origin 
+         ){
+            IsinStock = true ;
+            break ;
+        }
     }
+    function additionInQuantity(this){
+        let button1 = document.querySelector("button")[0];
+        if(button1 === "+"){
+            quantity = quantity+1 ;
+        }
+    }
+    function SubtractionInQuantity(this){
+        let button2 = document.querySelector("button")[1];
+        if(button2==="-"){
+            quantity = quantity-1;
+        }
+    }
+ if (IsinStock){
+     window.location = "Cart.html";
+     container.innerHTML = `${selectedProduct}<button onclick = "${additionInQuantity(el)}">+</button><p>1</p><  onclick="${SubtractionInQuantity}"button>-</button>` ;  
+ }
+else{
+    container.innerHTML = `<h1>The Search Product is not avaible on our website</h1>`
+    container.style.color = "red";
 }
-function makeProductCard(product) {
-    return `
-        <div class="product-card">
-            ${product.isImported ? '<span class="imported">IMPORTED</span>' : ''}
-            <img src="${product.imgSrc}" alt="${product.name} ${product.type}"/>
-            <h2>${product.name} ${product.type}</h2>
-            <p class="price">$${product.price.toLocaleString()}</p>
-            <p>Category: ${product.category}</p>
-            <span class="origin">From: ${product.origin}</span>
-            <button class="add-to-cart" onclick="AddtoCart(this)">Add to Cart</button>
-        </div>
-    `;
-}
-function filterProducts(el) {
-    let filteredProducts = [];
-    
-    for (let i = 0; i < productsData.length; i++) {
-        if (el.value === 'Imported' && productsData[i].isImported) {
-            filteredProducts.push(productsData[i]);
-        }
-        else if (el.value === 'Pakistani' && !productsData[i].isImported) {
-            filteredProducts.push(productsData[i]);
-        }
-    }
-    
-    if (el.value === 'All') {
-        filteredProducts = productsData.slice(0);
-    }
-
-    listProducts(filteredProducts);
-}
-function filterProductsCategory(el) {
-    let filteredProductscat = [];
-    
-    for (let i = 0; i < productsData.length; i++) {
-        if (el.value === 'Fragnance' && productsData[i].category === 'Fragrance') {
-            filteredProductscat.push(productsData[i]);
-        }
-        else if (el.value === 'Clothing' && productsData[i].category === 'Clothing') {
-            filteredProductscat.push(productsData[i]);
-        }
-        else if(el.value === 'Watch' && productsData[i].category === 'Watch'){
-            filteredProductscat.push(productsData[i]);
-        }
-    }
-    
-    if (el.value === 'All') {
-        filteredProductscat = productsData.slice(0);
-    }
-
-    listProducts(filteredProductscat);
 }
