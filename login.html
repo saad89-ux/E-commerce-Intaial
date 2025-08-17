@@ -3,27 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login/Signup System</title>
-    <link rel="stylesheet" href="login.style.css">
+    <title>Login/Signup</title>
+    <link rel="stylesheet" href="css/login.style.css">
 </head>
 <body>
-    <div>
-        <h1>Signup</h1>
-        <label>Username: <input type="text" class="signup-username"></label><br>
-        <label>Email: <input type="email" class="signup-email" ></label><br>
-        <label>Password: <input type="password" class="signup-password" ></label><br>
-        <button onclick="signup()">Signup</button>
-        <p class="signup-message"></p>
+    <div class="auth-container">
+        <div class="signup-form">
+            <h1>Signup</h1>
+            <input type="text" class="signup-username" placeholder="Username">
+            <input type="email" class="signup-email" placeholder="Email">
+            <input type="password" class="signup-password" placeholder="Password">
+            <button onclick="signup()">Signup</button>
+            <p class="signup-message"></p>
+        </div>
+
+        <div class="login-form">
+            <h1>Login</h1>
+            <input type="email" class="login-email" placeholder="Email">
+            <input type="password" class="login-password" placeholder="Password">
+            <button onclick="login()">Login</button>
+            <p class="login-message"></p>
+        </div>
     </div>
 
-    <div>
-        <h1>Login</h1>
-        <label>Email: <input type="email" class="login-email"></label><br>
-        <label>Password: <input type="password" class="login-password"></label><br>
-        <button onclick="login()">Login</button>
-        <p class="login-message"></p>
-    </div>
-
-    <script src="login.js"></script>
+    <script src="js/login.js"></script>
 </body>
 </html>

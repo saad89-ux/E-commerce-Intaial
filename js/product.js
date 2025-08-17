@@ -189,43 +189,75 @@ let productsData = [
         origin: 'Pakistan'
     }
 ];
-function AddToCart(el){
-    let container = document.querySelectorAll("div")[0] ;
-    let quantity = 1 ;
-    let IsinStock = true ;
-    for(let i =0 ;i< productsData.length ; i++){
 
-        let selectedProduct = productsData[i] ;
-        if(selectedProduct.name === name 
-            && selectedProduct.type === type 
-            && selectedProduct.category===category
-            && selectedProduct.imgSrc === imgsrc 
-            && selectedProduct.price ===price 
-            && selectedProduct.isImported === true
-            && selectedProduct.origin === origin 
-         ){
-            IsinStock = true ;
-            break ;
-        }
-    }
-    function additionInQuantity(this){
-        let button1 = document.querySelector("button")[0];
-        if(button1 === "+"){
-            quantity = quantity+1 ;
-        }
-    }
-    function SubtractionInQuantity(this){
-        let button2 = document.querySelector("button")[1];
-        if(button2==="-"){
-            quantity = quantity-1;
-        }
-    }
- if (IsinStock){
-     window.location = "Cart.html";
-     container.innerHTML = `${selectedProduct}<button onclick = "${additionInQuantity(el)}">+</button><p>1</p><  onclick="${SubtractionInQuantity}"button>-</button>` ;  
- }
-else{
-    container.innerHTML = `<h1>The Search Product is not avaible on our website</h1>`
-    container.style.color = "red";
+document.addEventListener('DOMContentLoaded', function() {
+    listProducts(productsData);
+    updateCartCount();
+    
+    // Search functionality
+    document.getElementById('search-input').addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const filtered = productsData.filter(product => 
+            product.name.toLowerCase().includes(searchTerm) || 
+            product.type.toLowerCase().includes(searchTerm)
+        );
+        listProducts(filtered);
+    });
+
+    // Category filter
+    document.getElementById('category-filter').addEventListener('change', function(e) {
+        const category = e.target.value;
+        const filtered = category === 'All' 
+            ? productsData 
+            : productsData.filter(product => product.category === category);
+        listProducts(filtered);
+    });
+
+    // Origin filter
+    document.getElementById('origin-filter').addEventListener('change', function(e) {
+        const origin = e.target.value;
+        const filtered = origin === 'All' 
+            ? productsData 
+            : origin === 'Imported' 
+                ? productsData.filter(product => product.isImported) 
+                : productsData.filter(product => !product.isImported);
+        listProducts(filtered);
+    });
+});
+
+function listProducts(products) {
+    const container = document.querySelector('.Products-list-container');
+    container.innerHTML = products.map(product => `
+        <div class="product-card">
+            ${product.isImported ? '<span class="imported">IMPORTED</span>' : ''}
+            <img src="${product.imgSrc}" alt="${product.name}">
+            <h3>${product.name} ${product.type}</h3>
+            <p class="price">$${product.price}</p>
+            <button onclick="AddToCart(${JSON.stringify(product).replace(/"/g, '&quot;')})">
+                Add to Cart
+            </button>
+        </div>
+    `).join('');
 }
+
+function AddToCart(product) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingItem = cart.find(item => item.name === product.name && item.type === product.type);
+    
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({...product, quantity: 1});
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    window.location.href = "Cart.html";
 }
+
+function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+    document.querySelector('.cart-count').textContent = count;
+}
+
